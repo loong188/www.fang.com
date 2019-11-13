@@ -16,6 +16,6 @@ class AdminService {
             $query->whereBetween('created_at',[$st,$et]);
         })->when($kw,function ($query) use ($kw){
             $query->where('username','like',"%{$kw}%");
-        })->where('id','!=',$userid)->orderBy('id','desc')->paginate($pagesize);
+        })->where('id','!=',$userid)->orderBy('id','desc')->withTrashed()->paginate($pagesize);
     }
 }

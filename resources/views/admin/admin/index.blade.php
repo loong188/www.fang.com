@@ -14,7 +14,7 @@
     @include('admin.public.msg')
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+            <a onclick="deleteAll()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
             <a href="{{ route('admin.user.create') }}"  class="btn btn-primary radius">
@@ -47,10 +47,17 @@
                 <td>{{ $item->sex }}</td>
                 <td>{{ $item->phone }}</td>
                 <td>{{ $item->email ?? '无' }}</td>
-                <td>{{ $item->created_at }}</td>
+                <td>{{ $item->created_at }}
+                <td>
+                    @if($item->deleted_at)
+                        <a onclick="changeUser(1,{{ $item->id }},this)" class="label label-warning radius">禁用</a>
+                        @else
+                        <a onclick="changeUser(0,{{ $item->id }},this)" class="label label-success radius">激活</a>
+                    @endif
+                </td>
                 <td class="td-manage">
                     <a href="{{ route('admin.user.edit',['id'=>$item->id]) }}" class="label label-secondary radius">修改</a>
-                    <a  href="javascript:;" class="label label-secondary radius">删除</a>
+                    <a  data-href="{{ route('admin.user.destroy',['id'=>$item->id]) }}" class="label label-secondary radius deletes">删除</a>
                 </td>
             </tr>
                 @endforeach
@@ -64,4 +71,64 @@
 <script type="text/javascript" src="{{ staticAdminWeb() }}lib/My97DatePicker/4.8/WdatePicker.js"></script>
 <script type="text/javascript" src="{{ staticAdminWeb() }}lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="{{ staticAdminWeb() }}lib/laypage/1.2/laypage.js"></script>
+    <script>
+        const _token="{{csrf_token()}}";
+        $('.deletes').click(function(){
+            var url=$(this).attr('data-href');
+            layer.confirm('您真要删除此用户吗？', {
+                btn: ['确认删除', '再想一下']
+            },()=>{
+                $.ajax({
+                    url,
+                    type:'delete',
+                    data:{_token}
+                }).then(ret=>{
+                    $(this).parents('tr').remove();
+                layer.msg(ret.msg,{icon:1,time:1000});
+                });
+            });
+            return false;
+        });
+        //软删除批量删除
+        function deleteAll() {
+            var inputs =$('input[name="ids[]"]:checked');
+            var ids=[];
+            inputs.map((key,item)=>{
+            ids.push($(item).val());
+            });
+            $.ajax({
+                url:'{{ route('admin.user.delall') }}',
+                type:'delete',
+                data:{
+                    _token,
+                    ids
+                }
+            }).then(ret=>{
+                inputs.map((key,item)=>{
+                    $(item).parents('tr').remove();
+            });
+            });
+        }
+        function changeUser(status,id,obj){
+        if(status == 0){
+            $.ajax({
+                url:'{{ route('admin.user.delall') }}',
+                type:'delete',
+                data:{
+                    _token,
+                    ids:[id]
+                }
+            }).then(ret=>{
+                $(obj).removeClass('label-success').addClass('label-warning').html('禁用');
+            })
+        }else{
+            $.ajax({
+                url: '{{ route('admin.user.restore') }}',
+                data: {id}
+            }).then(ret=>{
+                $(obj).removeClass('label-warning').addClass('label-success').html('激活');
+            });
+        }
+        }
+    </script>
 @endsection

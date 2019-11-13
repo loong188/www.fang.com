@@ -3,7 +3,7 @@
 <div class="page-container">
     <p class="f-20 text-success">{{ session('success') }} <span class="f-14">v3.1</span>后台模版！</p>
     <p>登录次数：18 </p>
-    <p>上次登录IP：222.35.131.79.1  上次登录时间：2014-6-14 11:19:55</p>
+    <p>登录IP：{{ $data['REMOTE_ADDR'] }}  登录时间：{{ date('Y-m-d H:i:s',$data['REQUEST_TIME']) }} 账户：{{ $user }}</p>
     <table class="table table-border table-bordered table-bg">
         <thead>
         <tr>

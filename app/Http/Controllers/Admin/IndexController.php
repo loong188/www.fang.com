@@ -10,12 +10,22 @@ class IndexController extends BaseController
 {
     public function index()
     {
-        return view('admin.index.index');
+
+        return view('admin.index.index',compact('data'));
     }
 
     public function welcome()
     {
-        return view('admin.index.welcome');
+        $data=$_SERVER;
+        $user=auth()->user();
+        $user=$user['username'];
+////        $data[]=$data['REQUEST_TIME'];
+//        $data=$data['REMOTE_ADDR'];
+//        dump($data);
+//        dump($user);
+
+
+        return view('admin.index.welcome',compact('data','user'));
     }
 
     public function logout()

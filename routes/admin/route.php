@@ -17,5 +17,10 @@ Route::group(['namespace'=> 'Admin','prefix'=> 'admin','as'=> 'admin.'],function
         Route::post('user/create','AdminController@store')->name('user.store');
         Route::get('user/edit/{id}','AdminController@edit')->name('user.edit');
         Route::put('user/edit/{id}','AdminController@update')->name('user.update');
+        Route::delete('user/destroy/{id}','AdminController@destroy')->name('user.destroy');
+        Route::delete('user/delall}','AdminController@delall')->name('user.delall');
+        Route::get('user/restore}','AdminController@restore')->name('user.restore');
+        Route::resource('role','RoleController');
+        Route::resource('node','NodeController');
     });
 });

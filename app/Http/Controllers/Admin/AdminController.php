@@ -54,4 +54,22 @@ class AdminController extends BaseController
         Admin::where('id',$id)->update($data);
         return redirect(route('admin.user.index'))->with('success','修改用户【'.$data['truename'].'】成功 ');
     }
+
+    public function destroy(int $id)
+    {
+        Admin::destroy($id);
+        return ['status'=>0,'msg'=>'删除成功'];
+    }
+    public function delall(Request $request){
+        $ids=$request->get('ids');
+        Admin::destroy($ids);
+        return ['status'=>0,'msg'=>'删除成功'];
+    }
+
+    public function restore(Request $request)
+    {
+        $id=$request->get('id');
+        Admin::where('id',$id)->onlyTrashed()->restore();
+        return ['status'=>0,'msg'=>'成功'];
+    }
 }
