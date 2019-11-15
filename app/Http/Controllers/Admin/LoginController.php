@@ -23,10 +23,10 @@ class LoginController extends Controller
         ]);
         $bool=auth()->attempt($data);
 
-        Mail::raw('登陆成功',function(Message $message){
-            $message->subject('登录通知');
-            $message->to('1046232272@qq.com','小哥');
-        });
+//        Mail::raw('登陆成功',function(Message $message){
+//            $message->subject('登录通知');
+//            $message->to('1046232272@qq.com','小哥');
+//        });
         if(!$bool){
             return redirect(route('admin.login'))->withErrors(['error'=>'登录失败']);
         };

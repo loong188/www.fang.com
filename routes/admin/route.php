@@ -22,5 +22,7 @@ Route::group(['namespace'=> 'Admin','prefix'=> 'admin','as'=> 'admin.'],function
         Route::get('user/restore}','AdminController@restore')->name('user.restore');
         Route::resource('role','RoleController');
         Route::resource('node','NodeController');
+        Route::post('article/upfile','ArticleController@upfile')->name('article.upfile');
+        Route::resource('article','ArticleController');
     });
 });

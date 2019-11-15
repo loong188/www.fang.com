@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Article;
 use Illuminate\Http\Request;
-use App\Models\Admin;
-use App\Models\Node;
+use App\Http\Controllers\Controller;
+use App\Models\Cate;
+use App\Http\Requests\ArticleAddRequest;
 
-class NodeController extends BaseController
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +17,15 @@ class NodeController extends BaseController
      */
     public function index()
     {
-        $data=Node::all()->toArray();
-        $data=treeLevel($data);
-        return view('admin.node.index',compact('data'));
+
     }
 
+    public function upfile(Request $request)
+    {
+        $file=$request->file('file');
+        $uri=$file->store('','article');
+        return ['status'=>0,'url'=>'/uploads/articles/'.$uri];
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -27,11 +33,11 @@ class NodeController extends BaseController
      */
     public function create()
     {
-        $data=Node::where('pid',0)->pluck('name','id')->toArray();
-//        array_unshift($data,'==顶级==');
-        $data[0]='==顶级==';
-        ksort($data);
-        return view('admin.node.create',compact('data'));
+
+        $cateData=Cate::all()->toArray();
+        $cateData=treeLevel($cateData);
+//        dd($cateData);die;
+        return view('admin.article.create',compact('cateData'));
     }
 
     /**
@@ -40,22 +46,20 @@ class NodeController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleAddRequest $request)
     {
-        $this->validate($request,[
-            'name'=>'required'
-        ]);
-        Node::create($request->except(['_token']));
-        return redirect(route('admin.node.index'));
+        $data=$request->except(['_token','file']);
+        Article::create($data);
+        return redirect(route('admin.article.index'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Article $article)
     {
         //
     }
@@ -63,10 +67,10 @@ class NodeController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Article $article)
     {
         //
     }
@@ -75,10 +79,10 @@ class NodeController extends BaseController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Article $article)
     {
         //
     }
@@ -86,10 +90,10 @@ class NodeController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Article  $article
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
         //
     }

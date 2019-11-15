@@ -32,7 +32,6 @@
                 <th width="40">性别</th>
                 <th width="90">手机</th>
                 <th width="150">邮箱</th>
-                <th width="">地址</th>
                 <th width="130">加入时间</th>
                 <th width="70">状态</th>
                 <th width="100">操作</th>
@@ -56,8 +55,12 @@
                     @endif
                 </td>
                 <td class="td-manage">
-                    <a href="{{ route('admin.user.edit',['id'=>$item->id]) }}" class="label label-secondary radius">修改</a>
-                    <a  data-href="{{ route('admin.user.destroy',['id'=>$item->id]) }}" class="label label-secondary radius deletes">删除</a>
+                    {{--<a href="{{ route('admin.user.edit',['id'=>$item->id]) }}" class="label label-secondary radius">修改</a>--}}
+                    {{--<a  data-href="{{ route('admin.user.destroy',['id'=>$item->id]) }}" class="label label-secondary radius deletes">删除</a>--}}
+                    {{--在摸板中调用模型中的对象方法来得到按钮--}}
+                    {{--{{!!  !!}}表示中间的内容不会被转化--}}
+                    {!! $item->editBtn('admin.user.edit') !!}
+                    {!! $item->delBtn('admin.user.destroy') !!}
                 </td>
             </tr>
                 @endforeach

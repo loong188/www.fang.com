@@ -5,13 +5,28 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Node;
 
 class IndexController extends BaseController
 {
     public function index()
     {
-
-        return view('admin.index.index',compact('data'));
+        //获取闪存存到闪存
+        session()->flash('success',session('success'));
+        //登录用户信息
+        $userModel = auth()->user();
+        //对应角色关联属于
+        $roleModel = $userModel->role;
+        if($userModel->username != 'admin'){
+            //普通用户
+            $nodeData = $roleModel->nodes()->where('is_menu','1')->get(['id','pid','name','route_name'])->toArray();
+        }else{
+            //超级管理员
+            $nodeData=Node::where('is_menu','1')->get(['id','pid','name','route_name'])->toArray();
+        }
+        $menuData=subTree($nodeData);
+//        dump($menuData);die;
+        return view('admin.index.index',compact('menuData'));
     }
 
     public function welcome()

@@ -61,6 +61,19 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色分配：</label>
+            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
+                @foreach($roleData as $id=>$name)
+                <div class="radio-box">
+                    <label>
+                    <input name="role_id" type="radio" value="{{ $id }}">
+                    {{ $name }}
+                    </label>
+                </div>
+                    @endforeach
+            </div>
+        </div>
+        <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
                 <input class="btn btn-primary radius" type="submit" value="添加新用户">
             </div>

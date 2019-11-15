@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use App\Models\Services\AdminService;
 use Illuminate\Http\Request;
 use App\Models\Admin;
@@ -16,7 +17,8 @@ class AdminController extends BaseController
 
     public function create()
     {
-        return view('admin.admin.create');
+        $roleData=Role::pluck('name','id');
+        return view('admin.admin.create',compact('roleData'));
     }
 
     public function store(Request $request)
@@ -26,6 +28,7 @@ class AdminController extends BaseController
             'truename'=>'required',
             'email'=>'nullable|email',
             'password'=>'required|confirmed',
+            'role_id'=>'required'
         ]);
         $data=$request->except(['_token','password_confirmation']);
         $model=Admin::create($data);

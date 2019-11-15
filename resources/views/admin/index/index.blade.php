@@ -55,16 +55,18 @@
 </header>
 <aside class="Hui-aside">
     <div class="menu_dropdown bk_2">
+        @foreach($menuData as $item)
         <dl id="menu-admin">
-            <dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dt><i class="Hui-iconfont">&#xe62d;</i>{{ $item['name'] }}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="{{ route('admin.user.index') }}" data-title="用户列表" href="javascript:void(0)">管理员列表</a></li>
-                    <li><a data-href="{{ route('admin.role.index') }}" data-title="角色管理" href="javascript:void(0)">角色管理</a></li>
-                    <li><a data-href="{{ route('admin.node.index') }}" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
+                    @foreach($item['sub'] as $val)
+                    <li><a data-href="{{ route($val['route_name']) }}" data-title="{{ $val['name'] }}" href="javascript:void(0)">{{ $val['name'] }}</a></li>
+                @endforeach
                 </ul>
             </dd>
         </dl>
+            @endforeach
     </div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
