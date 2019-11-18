@@ -15,7 +15,17 @@ trait Btn{
     public function editBtn(string $routeName)
     {
         if($this->checkAuth($routeName)){
-            return '<a href="'.route($routeName,$this).'" class="label label-secondary radius">修改</a>';
+            $arr['start']=request()->get('start') ?? 0;
+            $arr['field']=request()->get('order')[0]['column'];
+            $arr['order'] = request()->get('order')[0]['dir'];
+            $params=http_build_query($arr);
+            $url=route($routeName,$this);
+            if(stristr($url,'?')){
+                $url=$url.'&'.$params;
+            }else{
+                $url=$url.'?'.$params;
+            }
+            return '<a href="'.$url.'" class="label label-secondary radius">修改</a>';
         }
         return '';
     }

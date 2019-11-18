@@ -23,6 +23,7 @@ Route::group(['namespace'=> 'Admin','prefix'=> 'admin','as'=> 'admin.'],function
         Route::resource('role','RoleController');
         Route::resource('node','NodeController');
         Route::post('article/upfile','ArticleController@upfile')->name('article.upfile');
+        Route::get('article/delfile','ArticleController@delfile')->name('article.delfile');
         Route::resource('article','ArticleController');
     });
 });
