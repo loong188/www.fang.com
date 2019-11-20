@@ -7,11 +7,14 @@ Route::group(['namespace'=> 'Admin','prefix'=> 'admin','as'=> 'admin.'],function
 
 
     Route::group(['middleware' => ['checkadmin:id=1&name=aaa']],function(){
-        Route::get('edit','IndexController@edit')->name('edit');
+
         Route::put('edit/{id}','IndexController@update')->name('update');
         Route::get('index','IndexController@index')->name('index');
         Route::get('welcome','IndexController@welcome')->name('welcome');
         Route::get('logout','IndexController@logout')->name('logout');
+        Route::post('base/upfile','BaseController@upfile')->name('base.upfile');
+
+        Route::get('edit','IndexController@edit')->name('edit');
         Route::get('user/index','AdminController@index')->name('user.index');
         Route::get('user/create','AdminController@create')->name('user.create');
         Route::post('user/create','AdminController@store')->name('user.store');
@@ -25,5 +28,7 @@ Route::group(['namespace'=> 'Admin','prefix'=> 'admin','as'=> 'admin.'],function
         Route::post('article/upfile','ArticleController@upfile')->name('article.upfile');
         Route::get('article/delfile','ArticleController@delfile')->name('article.delfile');
         Route::resource('article','ArticleController');
+        Route::resource('fangattr','FangAttrController');
+        Route::resource('fangowner','FangOwnerController');
     });
 });

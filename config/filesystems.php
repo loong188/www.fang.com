@@ -47,7 +47,17 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-        'article' => [
+        //房源属性节点
+        'fangattr' => [
+            'driver' => 'local',
+            'root' => public_path('uploads/fangattr'),
+        ],
+        'fangowner' => [
+            'driver' => 'local',
+            'root' => public_path('uploads/fangowner'),
+        ],
+        //文章属性节点
+        'articles' => [
           'driver' => 'local',
           'root' => public_path('uploads/articles'),
         ],
