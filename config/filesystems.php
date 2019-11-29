@@ -56,6 +56,21 @@ return [
             'driver' => 'local',
             'root' => public_path('uploads/fangowner'),
         ],
+        'fangownerexcel' => [
+            'driver' => 'local',
+            'root' => public_path('uploads/fangownerexcel'),
+        ],
+        'fang' => [
+            'driver' => 'local',
+            'root' => public_path('uploads/fang'),
+        ],
+        //个人身份证信息
+        'renting' => [
+            // 驱动 本地文件
+            'driver' => 'local',
+            // 上传到服务器的位置
+            'root' => public_path('uploads/renting'),
+        ],
         //文章属性节点
         'articles' => [
           'driver' => 'local',

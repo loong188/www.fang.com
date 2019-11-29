@@ -5,6 +5,14 @@ use App\Observers\FangAttrObserver;
 
 class Fangattr extends Base
 {
+    //获取修改icon字段输出
+    public function getIconAttribute()
+    {
+        if(stristr($this->attributes['icon'],'http')){
+            return $this->attributes['icon'];
+        }
+        return self::$host .'/' .ltrim($this->attributes['icon'],'/');
+    }
     protected $appends=['actionBtn'];
     protected static function boot()
     {

@@ -1,9 +1,11 @@
 <?php
 //后台路由
+//
+
 Route::group(['namespace'=> 'Admin','prefix'=> 'admin','as'=> 'admin.'],function(){
     Route::get('login','LoginController@index')->name('login');
     Route::post('login','LoginController@login')->name('login');
-
+    Route::get('esinitindex','EsController@initIndex')->name('initIndex');
 
 
     Route::group(['middleware' => ['checkadmin:id=1&name=aaa']],function(){
@@ -29,6 +31,16 @@ Route::group(['namespace'=> 'Admin','prefix'=> 'admin','as'=> 'admin.'],function
         Route::get('article/delfile','ArticleController@delfile')->name('article.delfile');
         Route::resource('article','ArticleController');
         Route::resource('fangattr','FangAttrController');
+        Route::get('fangowner/export','FangOwnerController@export')->name('fangowner.export');
         Route::resource('fangowner','FangOwnerController');
+        Route::get('fang/city','FangController@getCity')->name('fang.city');
+        Route::resource('fang','FangController');
+        //预约管理
+        Route::resource('notice','NoticeController');
+        //租客列表
+//        Route::get('renting/index','RentingController');
+        Route::resource('renting','RentingController');
+        Route::resource('apiuser','ApiuserController');
+
     });
 });

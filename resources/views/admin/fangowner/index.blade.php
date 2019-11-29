@@ -16,56 +16,77 @@
     </div>
     @include('admin.public.msg')
     <div class="cl pd-5 bg-1 bk-gray mt-20">
-        <span class="l">
-            <a class="btn btn-danger radius">
-            <i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-            <a class="btn btn-primary radius" href="{{ route('admin.fangattr.create') }}">
-                <i class="Hui-iconfont">&#xe600;</i>房源列表</a>
-        </span>
+            <span class="l">
+                <a href="{{ route('admin.fangowner.create') }}" class="btn btn-primary radius">
+                    <i class="Hui-iconfont">&#xe600;</i> 添加房东
+                </a>
+                <a href="{{ route('admin.fangowner.export') }}" class="btn btn-success radius">
+                    <i class="Hui-iconfont">&#xe600;</i> 导出房东excel
+                </a>
+                <a style="display: @if($isshow) inline-block; @else none; @endif" href="/uploads/fangownerexcel/fangowner.xlsx" class="btn btn-success radius">
+                    <i class="Hui-iconfont">&#xe600;</i> 下载excel
+                </a>
+            </span>
     </div>
     <div class="mt-20" id="app">
         <table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
             <thead>
             <tr class="text-c">
-                <th width="80">ID</th>
-                <th>属性名称</th>
-                <th>图标</th>
-                <th width="120">操作</th>
+                <th width="40">ID</th>
+                <th width="100">房东姓名</th>
+                <th width="100">身份证号</th>
+                <th width="40">房东性别</th>
+                <th width="40">房东年龄</th>
+                <th width="100">联系号码</th>
+                <th width="100">家庭住址</th>
+                <th width="100">邮箱</th>
+                <th width="100">操作</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="item in items">
-                <td v-text="item.id"></td>
-                <td :style="'padding-left:'+(item.level*10)+'px'">@{{ item.name }}@{{ item.level }}</td>
+            @foreach($data as $item)
+            <tr>
+                <td>{{ $item->id }}</td>
+                <td>{{ $item->name }}</td>
+                <td>{{ $item->card }}</td>
+                <td>{{ $item->sex }}</td>
+                <td>{{ $item->age }}</td>
+                <td>{{ $item->phone }}</td>
+                <td>{{ $item->address }}</td>
+                <td>{{ $item->email }}</td>
                 <td>
-                    <img :src="item.icon" style="width:100px;">
+                    {!! $item->showBtn('admin.fangowner.show') !!}
+                    {!! $item->editBtn('admin.fangowner.edit') !!}
+                    {!! $item->delBtn('admin.fangowner.destroy') !!}
                 </td>
-                <td v-html="item.actionBtn"></td>
             </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
+    {{ $data->appends(request()->except('page'))->links() }}
 </div>
 @endsection
 @section('js')
     <script type="text/javascript" src="{{ staticAdminWeb() }}lib/My97DatePicker/4.8/WdatePicker.js"></script>
     <script type="text/javascript" src="{{ staticAdminWeb() }}lib/laypage/1.2/laypage.js"></script>
-    <script src="/js/vue.js"></script>
 <script>
     const _token="{{ csrf_token() }}";
-    const app=new Vue({
-        el:'#app',
-        data:{
-            items:[]
-        },
-        mounted(){
-            $.get("{{ route('admin.fangattr.index') }}").then(ret=>{
-                this.items=ret;
-            })
+    $('.showBtn').click(function () {
+        let url=$(this).attr('href');
+        $.get(url).then(({status,msg,data})=>{
+            if(status == 0) {
+                let content='';
+            data.forEach(item => {
+                content +=`<img src="${item}" style="width: 150px;height: 150px;" />&nbsp;`;
+            });
+            layer.open({
+                type:1,
+                area:['600px','300px'],
+                content
+            });
         }
-    });
-    $('.table-sort').on('click','.deluser',function () {
-        console.log(11);
+        });
         return false;
     })
 

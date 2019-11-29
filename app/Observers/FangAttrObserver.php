@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\FangAttr;
 
+
 class FangAttrObserver
 {
     /**

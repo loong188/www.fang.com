@@ -2,9 +2,11 @@
 
 namespace App\Exceptions;
 
+use Dotenv\Exception\ValidationException;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-
+//use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Validator;
 class Handler extends ExceptionHandler
 {
     /**
@@ -46,6 +48,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($request->ajax()){
+        if($exception instanceof ValidationException){
+            return response()->json(['status'=> 1 ,'msg'=> '验证失败','data'=> $exception->validator->messages()],200);
+
+        }
         return parent::render($request, $exception);
     }
+        if($exception instanceof LoginException){
+           $data=['status'=>$exception->getCode(),'msg'=>$exception->getMessage()];
+            return response()->json($data,401);
+        }elseif($exception instanceof MyValidateException){
+            $data=['status'=>$exception->getCode(),'msg'=>$exception->getMessage()];
+            return response()->json($data,401);
+        }
+        return parent::render($request, $exception);
+    }
+
 }

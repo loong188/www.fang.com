@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\FangOwner;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\FangOwnerRequest;
-class FangOwnerController extends Controller
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\FangownerExport;
+class FangOwnerController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,11 @@ class FangOwnerController extends Controller
      */
     public function index()
     {
-        //
+//        echo 111;die;
+        $excelpath=public_path('/uploads/fangownerexcel/fangowner.xlsx');
+        $isshow=file_exists($excelpath) ? true : false;
+        $data=FangOwner::orderBy('id','desc')->paginate($this->pagesize);
+        return view('admin.fangowner.index')->with(['data'=>$data,'isshow'=>$isshow]);
     }
 
     /**
@@ -28,6 +33,14 @@ class FangOwnerController extends Controller
        return view('admin.fangowner.create');
     }
 
+    public function export()
+    {
+        $obj=Excel::store(new FangownerExport(),'fangowner.xlsx','fangownerexcel');
+        if($obj==true){
+            dump('导出成功');
+            return redirect(route('admin.fangowner.index'));
+        }
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -47,9 +60,16 @@ class FangOwnerController extends Controller
      * @param  \App\Models\FangOwner  $fangOwner
      * @return \Illuminate\Http\Response
      */
-    public function show(FangOwner $fangOwner)
+    public function show(FangOwner $fangowner)
     {
-        //
+//        dump($fang)
+        $pics=$fangowner->pic;
+        $picList=explode('#',$pics);
+        if(count($picList)<=1){
+            return ['status'=>1,'msg'=>'没有图片','data'=>[]];
+        }
+        array_shift($picList);
+        return ['status'=>0,'msg'=>'成功','data'=>$picList];
     }
 
     /**

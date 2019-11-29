@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Observers\FangOwnerOberver;
 
-class FangOwner extends Model
+class FangOwner extends Base
 {
-    //
+    protected static function boot()
+    {
+        parent::boot();
+        self::observe(FangOwnerOberver::class);
+    }
+
 }

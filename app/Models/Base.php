@@ -9,5 +9,11 @@ class Base extends Model
     use SoftDeletes,Btn;
     protected $guarded=[];
     protected $dates=['deleted_at'];
+    protected static $host;
+    protected static function boot()
+    {
+        parent::boot();
+        self::$host='http://www.fang.com';
+    }
 
 }
