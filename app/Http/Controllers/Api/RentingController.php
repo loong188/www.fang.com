@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\MyValidateException;
 use App\Exceptions\loginException;
+use App\Models\Fang;
 use App\Models\Renting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -50,5 +51,34 @@ class RentingController extends Controller
         $model=Renting::where('openid',$data['openid'])->first();
         if(!$model) throw new LoginException('没有查询到此信息',4);
         return ['status'=>0,'msg'=>'成功','data'=>$model];
+    }
+
+    public function deletepic(Request $request)
+    {
+        $data=$request->all();
+        $res=$data['id'];
+
+        if(stristr($res,'http')){
+          $res=substr($res ,19);
+        $ret=Renting::where('openid',$data['openid'])->value('card_img');
+            foreach ($ret as $item ){
+                $btn=substr($item ,19);
+                if($btn==$res){
+                    $filepath = public_path($btn);
+                    unlink($filepath);
+                }
+
+            }
+            
+
+
+//            array_map(function ($item){
+//                $ress=substr($item ,19);
+////                dump($ress);
+//                if($ress==$res){
+//                    dump($ress);
+//                }
+//            },$ret);
+        }
     }
 }

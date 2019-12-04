@@ -11,5 +11,4 @@ class FangOwner extends Base
         parent::boot();
         self::observe(FangOwnerOberver::class);
     }
-
 }

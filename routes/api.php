@@ -37,6 +37,8 @@ Route::group(['prefix'=>'v1','namespace'=>'Api'],function(){
     Route::post('userinfo','WxloginController@userinfo');
     //图片上传
     Route::post('upfile','RentingController@upfile');
+    //删除图片
+    Route::get('deletepic','RentingController@deletepic');
     //修改个人信息路由
     Route::put('editrenting','RentingController@editrenting');
     //根据用户ID查询用户信息
@@ -59,4 +61,14 @@ Route::group(['prefix'=>'v1','namespace'=>'Api'],function(){
     Route::get('fang/fanglist', 'FangController@fanglist');
     //房源详情
     Route::get('fang/detail', 'FangController@detail');
+    //收藏记录
+    Route::get('fang/fav', 'FavController@fav');
+    //是否收藏
+    Route::get('fang/isfav', 'FavController@isfav');
+    //收藏列表
+    Route::get('fang/list', 'FavController@list');
+    //房源属性
+    Route::get('fang/attr', 'FangController@attr');
+    //房源搜索
+    Route::get('fang/search', 'FangController@search');
 });

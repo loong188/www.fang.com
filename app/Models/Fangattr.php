@@ -11,7 +11,7 @@ class Fangattr extends Base
         if(stristr($this->attributes['icon'],'http')){
             return $this->attributes['icon'];
         }
-        return self::$host .'/' .ltrim($this->attributes['icon'],'/');
+        return self::$host .'/' .ltrim($this->attributes['icon'],'#/');
     }
     protected $appends=['actionBtn'];
     protected static function boot()
@@ -23,4 +23,8 @@ class Fangattr extends Base
     {
         return $this->editBtn('admin.fangattr.edit').' '.$this->delBtn('admin.fangattr.destroy');
     }
+//    public function getDtAttribute()
+//    {
+//        return date('Y-m-d',strtotime($this->attributes['updated_at']));
+//    }
 }

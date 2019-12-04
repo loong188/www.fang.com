@@ -10,7 +10,13 @@ class Fang extends Base
         parent::boot();
         self::observe(FangObserver::class);
     }
-
+//    public function getFangBodyAttribute()
+//    {
+//        if(stristr($this->attributes['FangBody'],'http')){
+//            return $this->attributes['FangBody'];
+//        }
+//        return self::$host . '/' . ltrim($this->attributes['FangBody'],'/');
+//    }
     public function fangowner()
     {
         return $this->belongsTo(FangOwner::class,'fang_owner');
@@ -39,5 +45,13 @@ class Fang extends Base
         return array_map(function ($item){
         return self::$host . '/' . ltrim($item,'/');
         },$arr);
+    }
+    public function getUpdatedAtAttribute()
+    {
+        return date('Y-m-d',strtotime($this->attributes['updated_at']));
+    }
+    public function getFangPicsAttribute()
+    {
+        return $this->attributes['fang_pic'];
     }
 }
