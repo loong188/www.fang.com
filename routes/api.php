@@ -30,7 +30,7 @@ use Illuminate\Http\Request;
 //    return ['status'=>0,'msg'=>'登陆成功'];
 //});
 //路由
-Route::group(['prefix'=>'v1','namespace'=>'Api'],function(){
+Route::group(['prefix'=>'v1','namespace'=>'Api','middleware'=>['checkapi']],function(){
     //登录路由
     Route::post('wxlogin','WxloginController@login');
     //授权路由

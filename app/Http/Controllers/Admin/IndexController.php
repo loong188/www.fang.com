@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Fang;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
@@ -9,6 +10,10 @@ use App\Models\Node;
 
 class IndexController extends BaseController
 {
+    public function __construct()
+    {
+        
+    }
     public function index()
     {
         //获取闪存存到闪存
@@ -31,16 +36,20 @@ class IndexController extends BaseController
 
     public function welcome()
     {
-        $data=$_SERVER;
+        $datas=$_SERVER;
         $user=auth()->user();
         $user=$user['username'];
-////        $data[]=$data['REQUEST_TIME'];
-//        $data=$data['REMOTE_ADDR'];
-//        dump($data);
-//        dump($user);
+        $count1=Fang::where('fang_status',1)->count();
+        $count2=Fang::where('fang_status',0)->count();
+        $legend="'已租','待租'";
+        $data=[
+            ['value'=>$count1,'name'=>'已租'],
+            ['value'=>$count2,'name'=>'待租']
+        ];
+        $data=json_encode($data,JSON_UNESCAPED_UNICODE);
 
 
-        return view('admin.index.welcome',compact('data','user'));
+        return view('admin.index.welcome',compact('data','datas','legend','user'));
     }
 
     public function logout()

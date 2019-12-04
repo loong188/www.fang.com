@@ -69,7 +69,7 @@ class RentingController extends Controller
                 }
 
             }
-            
+
 
 
 //            array_map(function ($item){
